@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor", "BitcoinPriceMonitor\BitcoinPriceMonitor.csproj", "{672B50F8-B2AD-4543-BECB-6836E9EFABD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor", "BitcoinPriceMonitor\BitcoinPriceMonitor.csproj", "{672B50F8-B2AD-4543-BECB-6836E9EFABD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitCoinPriceMonitor.Infrastrucutre", "BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastrucutre.csproj", "{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Application", "BitcoinPriceMonitor.Application\BitcoinPriceMonitor.Application.csproj", "{80492709-934E-4209-9E22-F94EB6AAF0B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Domain", "BitcoinPriceMonitor.Domain\BitcoinPriceMonitor.Domain.csproj", "{2013F3AD-7007-407C-B48B-92889C8C1772}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{672B50F8-B2AD-4543-BECB-6836E9EFABD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672B50F8-B2AD-4543-BECB-6836E9EFABD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672B50F8-B2AD-4543-BECB-6836E9EFABD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80492709-934E-4209-9E22-F94EB6AAF0B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80492709-934E-4209-9E22-F94EB6AAF0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80492709-934E-4209-9E22-F94EB6AAF0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80492709-934E-4209-9E22-F94EB6AAF0B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2013F3AD-7007-407C-B48B-92889C8C1772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2013F3AD-7007-407C-B48B-92889C8C1772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2013F3AD-7007-407C-B48B-92889C8C1772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2013F3AD-7007-407C-B48B-92889C8C1772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
