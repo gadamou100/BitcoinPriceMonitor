@@ -1,6 +1,8 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
+using BitCoinPriceMonitor.Infrastrucutre.Factories;
+using BitCoinPriceMonitor.Infrastrucutre.Network;
 using BitCoinPriceMonitor.Infrastrucutre.Persistance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,13 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
                     .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddTransient<IPriceSourceServices, PriceSourceServices>();
+            services.AddTransient<IHttpGetter, HttpClientWrapper>();
+            services.AddTransient<IJsonParserToPriceSnapshotFactory, JsonParserFactory>();
+            services.AddHostedService<SnapShotSaverBackgroundService>();
+            services.AddSingleton<IUnitOfWorkChannelSaver,SnapShotSaverBackgroundService>();
+
+
+
         }
     }
 }

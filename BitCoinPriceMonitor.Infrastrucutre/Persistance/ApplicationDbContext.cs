@@ -1,4 +1,5 @@
-﻿using BitCoinPriceMonitor.Domain.Data.Entities;
+﻿using BitcoinPriceMonitor.Domain.Constants;
+using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
             builder.Entity<PriceSnapshot>()
                 .HasIndex(p => p.RetrievedTimeStamp);
             builder.Entity<PriceSnapshot>().Property(p => p.Value).HasPrecision(2);
+            builder.Entity<PriceSnapshot>().Property(p => p.Comments).HasMaxLength(1024);
 
             builder.Entity<PriceSource>().Property(p => p.Name).HasMaxLength(256);
 
@@ -29,7 +31,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
 
             builder.Entity<PriceSource>().HasData(new PriceSource 
             { 
-                Id = Guid.NewGuid().ToString(), 
+                Id = SourceSeededIds.BitStamp, 
                 CreatedTimeStamp= DateTime.UtcNow,
                 CreatorId= Guid.Empty.ToString(),
                 Name = "Bit Stamp",
@@ -37,7 +39,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
             });
             builder.Entity<PriceSource>().HasData(new PriceSource
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = SourceSeededIds.CoinBase,
                 CreatedTimeStamp = DateTime.UtcNow,
                 Name = "Coin Base",
                 CreatorId = Guid.Empty.ToString(),

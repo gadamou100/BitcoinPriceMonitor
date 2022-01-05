@@ -4,6 +4,7 @@ using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BitcoinPriceMonitor.Controllers
 {
@@ -21,6 +22,13 @@ namespace BitcoinPriceMonitor.Controllers
         {
             var model =await _priceSourceServices.GetPriceSources();
             return View(model);
+        }
+
+        public async Task<ActionResult> GetLatestPriceFromSource(string source)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _priceSourceServices.GetLatestPriceFromSource(source, userId);
+            return new JsonResult(result);
         }
 
         // GET: PriceSourceController/Details/5

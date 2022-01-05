@@ -6,5 +6,6 @@
         public decimal Value { get; set;}
         public DateTime RetrievedTimeStamp { get; set; }
         public PriceSource PriceSource { get; set; }
+        public string Comments { get; set; }
     }
 }
