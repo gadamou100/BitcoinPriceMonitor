@@ -3,10 +3,13 @@
 @{
     ViewData["Title"] = "Index";
     var currentPage = @Model.ListItems.PageIndex + 1; //Because the backend return page numbers starting from zero.
+
 }
 
 <h1>Prices</h1>
 <input type='hidden' value=@Model.ListItems.PageIndex id='currentPageIndex' />
+<input type='hidden' value=@Model.ListItems.TotalPages id='totalPagesInput' />
+
 <div class="container">
     <div class="row">
         <div class="col-sm">
@@ -19,7 +22,7 @@
             <p>Current Page: @currentPage</p>
         </div>
         <div class="col-sm">
-            <p>Page Size: <input type="number"  min="1" step="1" id='pageSize' value=@Model.ListItems.PageSize /></p>
+            <p>Page Size: <input type="number" min="1" step="1" id='pageSize' value=@Model.ListItems.PageSize /></p>
         </div>
     </div>
 </div>
@@ -27,10 +30,10 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <label>Start Date:</label>  <input type='date' id='dateFilter' value='@Model.DateFilter?.ToString("yyyy-MM-dd")'/>
+            <label>Start Date:</label>  <input type='date' id='dateFilter' value='@Model.DateFilter?.ToString("yyyy-MM-dd")' />
         </div>
-            <div class="col-sm">
-            <label>End Date:</label>  <input type='date' id='endDateFilter' value='@Model.EndDateFilter?.ToString("yyyy-MM-dd")'/>
+        <div class="col-sm">
+            <label>End Date:</label>  <input type='date' id='endDateFilter' value='@Model.EndDateFilter?.ToString("yyyy-MM-dd")' />
         </div>
         <div class="col-sm">
             <label>Source Filter:</label><input type='text' id='sourceFilter' value='@Model.SortFilter' />
@@ -41,26 +44,26 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <label>Sort by price: </label> <input type='checkbox' id='sortByPrice' checked='@Model.SortByPrice' />            <label class='text-danger'>*Sort by price takes precedence over sort by date</label> 
+            <label>Sort by price: </label> <input type='checkbox' id='sortByPrice' checked='@Model.SortByPrice' />            <label class='text-danger'>*Sort by price takes precedence over sort by date</label>
 
         </div>
         <div class="col-sm">
             <label>Sort by date: </label> <input type='checkbox' id='sortByDate' checked='@Model.SortByDate' />
         </div>
         <div class="col-sm">
-            <label>Sort in descending order: </label> <input type='checkbox' id='sortInDescendingOrder'  checked='@Model.IsDescending' />
+            <label>Sort in descending order: </label> <input type='checkbox' id='sortInDescendingOrder' checked='@Model.IsDescending' />
         </div>
     </div>
 </div>
 
 <div class="container">
-      <div class="row">
-    <div class="col-sm">
-        <input type='button' class='btn-primary' id='applyFiltering' value='Apply Filter' />
-    </div>
-    <div class="col-sm">
-        <input type='button' class='btn-primary' id='applySorting' value='Apply Sorting' />
-    </div>
+    <div class="row">
+        <div class="col-sm">
+            <input type='button' class='btn-primary' id='applyFiltering' value='Apply Filter' />
+        </div>
+        <div class="col-sm">
+            <input type='button' class='btn-primary' id='applySorting' value='Apply Sorting' />
+        </div>
         @if (Model.ListItems.HasNextPage)
         {
             <div class="col-sm">
@@ -127,19 +130,59 @@
         }
     </tbody>
 </table>
+<table>
+    
+    <tbody>
+        <tr>
+
+            @for (var item = 1; item <= Model.ListItems.TotalPages; item++)
+            {
+
+                <td>
+                    @if (item-1 == Model.ListItems.PageIndex)
+                    {
+                     <input class="btn btn-light btn-circle btn-sm" disabled='disabled' onclick=goToPage('@item') value='@item' />
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary btn-circle btn-sm"onclick=goToPage('@item') value='@item' />
+                    }
+
+                </td>
+            }
+        </tr>
+
+    </tbody>
+</table>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+
+    function goToPage(pageNumber){
+        var pageToVisit = parseInt(pageNumber)-1;
+        $("#currentPageIndex").val(pageToVisit);
+        var queryString = GetQueryString();
+        window.location.href = `/PriceSnapShot?${queryString}`;
+    }
+
     function changePage(isPrevious){
         var pageToVisit = parseInt($("#currentPageIndex").val());
         if(isPrevious)
           pageToVisit=pageToVisit-1;
           else
             pageToVisit = pageToVisit+1;
-       $("#currentPageIndex").val(pageToVisit);
-         var queryString = GetQueryString();
-         window.location.href = `/PriceSnapShot?${queryString}`;
+        $("#currentPageIndex").val(pageToVisit);
+        var queryString = GetQueryString();
+        window.location.href = `/PriceSnapShot?${queryString}`;
     }
     $(document).ready(function () {
+        var totalPages = parseInt($("#totalPagesInput").val());
+        var currentPageNumber = parseInt($("#currentPageIndex").val());
+        if(currentPageNumber > totalPages){
+            $("#currentPageIndex").val(totalPages);
+             var queryString = GetQueryString();
+            window.location.href = `/PriceSnapShot?${queryString}`;
+        }
        $( "#applyFiltering" ).click(function() {
            $("#currentPageIndex").val(0);
            var queryString = GetQueryString();

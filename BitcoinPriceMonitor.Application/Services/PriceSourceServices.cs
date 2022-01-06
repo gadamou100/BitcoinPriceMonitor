@@ -2,6 +2,7 @@
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
+using Coravel.Queuing.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -28,41 +29,38 @@ namespace BitcoinPriceMonitor.Application.Services
         }
         public async Task<decimal> GetLatestPriceFromSource(string sourceId, string userId)
         {
-            try
-            {
-                var sourceTask = _unitOfWork.GetRepository<PriceSource>()
-                       .GetFirstOrDefaultAsync(selector: s => new PriceSource { Name = s.Name, Url = s.Url, HeaderParameters = s.HeaderParameters }, predicate: p => p.Id == sourceId);
-                var httpGetter = _serviceProvider.GetRequiredService<IHttpGetter>();
-                var source = await sourceTask;
-                if (source == default)
-                    throw new InvalidDataException($"Cannot found source with Id: {sourceId}");
 
-                var httpResponse = await httpGetter.Get(source.Url, source.ConvertHeaderValuesToDictionary());
-                if (string.IsNullOrEmpty(httpResponse))
-                    throw new InvalidDataException($"Server responded with an empty response");
-                var jsonParserFactory = _serviceProvider.GetRequiredService<IJsonParserToPriceSnapshotFactory>();
-                var jsonParser = jsonParserFactory.CreateParser(sourceId);
-                if (jsonParser.HasNoValue)
-                    throw new NotImplementedException($"Parser for source: {source.Name} is not implemented");
-                var priceSnapShot = jsonParser.Value.ParseJsonToPriceSnapshot(httpResponse);
-                if (priceSnapShot.HasNoValue)
-                    throw new InvalidCastException($"Failed to parse the response json to {typeof(PriceSnapshot).FullName}");
-                var priceSnapShotValue = priceSnapShot.Value;
-                priceSnapShotValue.Id = Guid.NewGuid().ToString();
-                priceSnapShotValue.CreatedTimeStamp = DateTime.UtcNow;
-                priceSnapShotValue.CreatorId = userId ?? String.Empty;
+            var sourceTask = _unitOfWork.GetRepository<PriceSource>()
+                   .GetFirstOrDefaultAsync(selector: s => new PriceSource { Name = s.Name, Url = s.Url, HeaderParameters = s.HeaderParameters }, predicate: p => p.Id == sourceId);
+            var httpGetter = _serviceProvider.GetRequiredService<IHttpGetter>();
+            var source = await sourceTask;
+            if (source == default)
+                throw new InvalidDataException($"Cannot found source with Id: {sourceId}");
 
-                await _unitOfWork.GetRepository<PriceSnapshot>().InsertAsync(priceSnapShotValue);
-                //todo move the below line in a bacground service for consume in order to not delay the result to the user
-                await _unitOfWork.SaveChangesAsync();
+            var httpResponse = await httpGetter.Get(source.Url, source.ConvertHeaderValuesToDictionary());
+            if (string.IsNullOrEmpty(httpResponse))
+                throw new InvalidDataException($"Server responded with an empty response");
+            var jsonParserFactory = _serviceProvider.GetRequiredService<IJsonParserToPriceSnapshotFactory>();
+            var jsonParser = jsonParserFactory.CreateParser(sourceId);
+            if (jsonParser.HasNoValue)
+                throw new NotImplementedException($"Parser for source: {source.Name} is not implemented");
+            var priceSnapShot = jsonParser.Value.ParseJsonToPriceSnapshot(httpResponse);
+            if (priceSnapShot.HasNoValue)
+                throw new InvalidCastException($"Failed to parse the response json to {typeof(PriceSnapshot).FullName}");
+            var priceSnapShotValue = priceSnapShot.Value;
+            priceSnapShotValue.Id = Guid.NewGuid().ToString();
+            priceSnapShotValue.CreatedTimeStamp = DateTime.UtcNow;
+            priceSnapShotValue.CreatorId = userId ?? String.Empty;
 
-                return priceSnapShotValue.Value;
-            }
-            catch (Exception e)
-            {
+            // Because saving requires a database trip that is costly add it to the queue for
+            // async consume and return result to the user.
+            var queue = _serviceProvider.GetRequiredService<IQueue>();
+            queue.QueueInvocableWithPayload<UnitOfWorkSaveInvocable, PriceSnapshot>(priceSnapShotValue);
 
-                throw;
-            }
+
+            return priceSnapShotValue.Value;
+
+
         }
     }
 }

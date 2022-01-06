@@ -20,6 +20,7 @@ namespace BitcoinPriceMonitor.Controllers
             if (dateFilter != null && endDateFilter != null && dateFilter > endDateFilter)
                 Swap(ref endDateFilter, ref dateFilter);
             var listItems  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,endDateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
+          
             var viewModel = new PricesIndexViewModel
             {
                 ListItems = listItems,

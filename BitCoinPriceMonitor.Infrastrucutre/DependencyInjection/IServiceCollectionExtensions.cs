@@ -4,6 +4,7 @@ using BitcoinPriceMonitor.Application.Services;
 using BitCoinPriceMonitor.Infrastrucutre.Factories;
 using BitCoinPriceMonitor.Infrastrucutre.Network;
 using BitCoinPriceMonitor.Infrastrucutre.Persistance;
+using Coravel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +29,8 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
             services.AddTransient<IPriceSnapshotService, PriceSnapshotService>();
             services.AddTransient<IHttpGetter, HttpClientWrapper>();
             services.AddTransient<IJsonParserToPriceSnapshotFactory, JsonParserFactory>();
-            services.AddHostedService<SnapShotSaverBackgroundService>();
-            services.AddSingleton<IUnitOfWorkChannelSaver,SnapShotSaverBackgroundService>();
+            services.AddTransient<UnitOfWorkSaveInvocable>();
+            services.AddQueue();
 
 
 
