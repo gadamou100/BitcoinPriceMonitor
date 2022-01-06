@@ -64,7 +64,7 @@ namespace BitcoinPriceMonitor.Application.Services
             var dateEnd = dateFilter == null ? (DateTime)SqlDateTime.MaxValue : dateFilter.Value.Date.AddDays(1).AddMilliseconds(-1);
 
             Expression<Func<PriceSnapshot, bool>> result = p => (p.RetrievedTimeStamp >= dateStart && p.RetrievedTimeStamp <= dateEnd)
-            && (sourceFilter == null || p.PriceSource.Name.Contains(sourceFilter) );
+            && (sourceFilter == null || p.PriceSource.Name.ToLower().Contains(sourceFilter.ToLower()) );
             return result;
         }
     }

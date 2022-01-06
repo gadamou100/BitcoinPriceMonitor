@@ -1,4 +1,5 @@
 ﻿using BitcoinPriceMonitor.Application.Interfaces;
+using BitcoinPriceMonitor.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,8 +17,17 @@ namespace BitcoinPriceMonitor.Controllers
         // GET: PriceSnapShotController
         public async Task<ActionResult> Index(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false, bool orderByPrice = false, bool descending = false)
         {
-            var model  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
-            return View(model);
+            var listItems  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
+            var viewModel = new PricesIndexViewModel
+            {
+                ListItems = listItems,
+                SortByDate = orderByDate,
+                SortByPrice = orderByPrice,
+                SortFilter  = sourceFilter,
+                DateFilter = dateFilter,
+                IsDescending = descending,
+            };
+            return View(viewModel);
         }
 
         // GET: PriceSnapShotController/Details/5

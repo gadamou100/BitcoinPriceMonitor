@@ -24,8 +24,4 @@
     <ProjectReference Include="..\BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastrucutre.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>

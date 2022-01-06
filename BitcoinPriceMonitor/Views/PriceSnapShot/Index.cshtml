@@ -1,25 +1,25 @@
-﻿@model IPagedList<BitCoinPriceMonitor.Domain.Data.Entities.PriceSnapshot>
+﻿@model PricesIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
-    var currentPage = @Model.PageIndex + 1; //Because the backend return page numbers starting from zero.
+    var currentPage = @Model.ListItems.PageIndex + 1; //Because the backend return page numbers starting from zero.
 }
 
 <h1>Prices</h1>
-<input type='hidden' value=@Model.PageIndex id='currentPageIndex' />
+<input type='hidden' value=@Model.ListItems.PageIndex id='currentPageIndex' />
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <p>Total Records: @Model.TotalCount</p>
+            <p>Total Records: @Model.ListItems.TotalCount</p>
         </div>
         <div class="col-sm">
-            <p>Total Pages: @Model.TotalPages</p>
+            <p>Total Pages: @Model.ListItems.TotalPages</p>
         </div>
         <div class="col-sm">
             <p>Current Page: @currentPage</p>
         </div>
         <div class="col-sm">
-            <p>Page Size: <input type="number"  min="1" step="1" id='pageSize' value=@Model.PageSize /></p>
+            <p>Page Size: <input type="number"  min="1" step="1" id='pageSize' value=@Model.ListItems.PageSize /></p>
         </div>
     </div>
 </div>
@@ -27,10 +27,10 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <label>Date Filter:</label>  <input type='date' id='dateFilter' />
+            <label>Date Filter:</label>  <input type='date' id='dateFilter' value='@Model.DateFilter?.ToString("yyyy-MM-dd")'/>
         </div>
         <div class="col-sm">
-            <label>Sort Filter:</label><input type='text' id='sourceFilter' />
+            <label>Sort Filter:</label><input type='text' id='sourceFilter' value='@Model.SortFilter' />
         </div>
     </div>
 </div>
@@ -38,13 +38,13 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <label>Sort by date: </label> <input type='checkbox' id='sortByDate' />
+            <label>Sort by date: </label> <input type='checkbox' id='sortByDate' checked='@Model.SortByDate' />
         </div>
         <div class="col-sm">
-            <label>Sort by price: </label> <input type='checkbox' id='sortByPrice' />
+            <label>Sort by price: </label> <input type='checkbox' id='sortByPrice' checked='@Model.SortByPrice' />
         </div>
         <div class="col-sm">
-            <label>Sort in descending order: </label> <input type='checkbox' id='sortInDescendingOrder' />
+            <label>Sort in descending order: </label> <input type='checkbox' id='sortInDescendingOrder'  checked='@Model.IsDescending' />
         </div>
     </div>
 </div>
@@ -57,13 +57,13 @@
     <div class="col-sm">
         <input type='button' class='btn-primary' id='applySorting' value='Apply Sorting' />
     </div>
-        @if (Model.HasNextPage)
+        @if (Model.ListItems.HasNextPage)
         {
             <div class="col-sm">
                 <input type="button" class='btn-primary' onclick=changePage(false) value='Next Page' />
             </div>
         }
-        @if (Model.HasPreviousPage)
+        @if (Model.ListItems.HasPreviousPage)
         {
             <div class="col-sm">
                 <input type="button" class='btn-danger' onclick=changePage(true) value='Previous Page' />
@@ -95,7 +95,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Items)
+        @foreach (var item in Model.ListItems.Items)
         {
             <tr>
                 <td>
@@ -144,9 +144,10 @@
         });
 
          $( "#applySorting" ).click(function() {
-            console.log('click sort');
-             var queryString = GetQueryString();
-            console.log(queryString);
+            var queryString = GetQueryString();
+            window.location.href = `/PriceSnapShot?${queryString}`;
+        });
+        $("#pageSize").focusout(function(){
             var queryString = GetQueryString();
             window.location.href = `/PriceSnapShot?${queryString}`;
         });
