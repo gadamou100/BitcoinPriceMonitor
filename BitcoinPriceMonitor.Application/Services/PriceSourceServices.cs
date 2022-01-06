@@ -53,6 +53,7 @@ namespace BitcoinPriceMonitor.Application.Services
                 priceSnapShotValue.CreatorId = userId ?? String.Empty;
 
                 await _unitOfWork.GetRepository<PriceSnapshot>().InsertAsync(priceSnapShotValue);
+                //todo move the below line in a bacground service for consume in order to not delay the result to the user
                 await _unitOfWork.SaveChangesAsync();
 
                 return priceSnapShotValue.Value;

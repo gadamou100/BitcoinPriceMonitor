@@ -2,27 +2,91 @@
 
 @{
     ViewData["Title"] = "Index";
+    var currentPage = @Model.PageIndex + 1; //Because the backend return page numbers starting from zero.
 }
 
-<h1>Index</h1>
+<h1>Prices</h1>
+<input type='hidden' value=@Model.PageIndex id='currentPageIndex' />
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <p>Total Records: @Model.TotalCount</p>
+        </div>
+        <div class="col-sm">
+            <p>Total Pages: @Model.TotalPages</p>
+        </div>
+        <div class="col-sm">
+            <p>Current Page: @currentPage</p>
+        </div>
+        <div class="col-sm">
+            <p>Page Size: <input type="number"  min="1" step="1" id='pageSize' value=@Model.PageSize /></p>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <label>Date Filter:</label>  <input type='date' id='dateFilter' />
+        </div>
+        <div class="col-sm">
+            <label>Sort Filter:</label><input type='text' id='sourceFilter' />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <label>Sort by date: </label> <input type='checkbox' id='sortByDate' />
+        </div>
+        <div class="col-sm">
+            <label>Sort by price: </label> <input type='checkbox' id='sortByPrice' />
+        </div>
+        <div class="col-sm">
+            <label>Sort in descending order: </label> <input type='checkbox' id='sortInDescendingOrder' />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+      <div class="row">
+    <div class="col-sm">
+        <input type='button' class='btn-primary' id='applyFiltering' value='Apply Filter' />
+    </div>
+    <div class="col-sm">
+        <input type='button' class='btn-primary' id='applySorting' value='Apply Sorting' />
+    </div>
+        @if (Model.HasNextPage)
+        {
+            <div class="col-sm">
+                <input type="button" class='btn-primary' onclick=changePage(false) value='Next Page' />
+            </div>
+        }
+        @if (Model.HasPreviousPage)
+        {
+            <div class="col-sm">
+                <input type="button" class='btn-danger' onclick=changePage(true) value='Previous Page' />
+            </div>
+        }
+    </div>
+</div>
+
+
 <table class="table">
     <thead>
         <tr>
-             <th>
-                 ID
+            <th>
+                ID
             </th>
             <th>
-               Price Source
+                Price Source
             </th>
             <th>
                 Value
             </th>
             <th>
-               Retrieved Time Stamp
+                Retrieved Time Stamp
             </th>
             <th>
                 Comments
@@ -31,30 +95,71 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Items) {
-        <tr>
-             <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceSource.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RetrievedTimeStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriceSource.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetrievedTimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments)
+                </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function changePage(isPrevious){
+        var pageToVisit = parseInt($("#currentPageIndex").val());
+        if(isPrevious)
+          pageToVisit=pageToVisit-1;
+          else
+            pageToVisit = pageToVisit+1;
+       $("#currentPageIndex").val(pageToVisit);
+         var queryString = GetQueryString();
+         window.location.href = `/PriceSnapShot?${queryString}`;
+    }
+    $(document).ready(function () {
+       $( "#applyFiltering" ).click(function() {
+           $("#currentPageIndex").val(0);
+           var queryString = GetQueryString();
+            window.location.href = `/PriceSnapShot?${queryString}`;
+
+        });
+
+         $( "#applySorting" ).click(function() {
+            console.log('click sort');
+             var queryString = GetQueryString();
+            console.log(queryString);
+            var queryString = GetQueryString();
+            window.location.href = `/PriceSnapShot?${queryString}`;
+        });
+    });
+    function GetQueryString(){
+            var dateFilter = $("#dateFilter").val();
+            var sourceFilter = $("#sourceFilter").val();
+            var orderByDate=$("#sortByDate").is(":checked");
+            var orderByPrice = $("#sortByPrice").is(":checked");
+            var descending = $("#sortInDescendingOrder").is(":checked");
+            var pageSize = $("#pageSize").val();
+            var pageNo = $("#currentPageIndex").val();
+            return `dateFilter=${dateFilter}&sourceFilter=${sourceFilter}&pageNo=${pageNo}&pageSize=${pageSize}&orderByDate=${orderByDate}&orderByPrice=${orderByPrice}&descending=${descending}`;
+    }
+
+</script>

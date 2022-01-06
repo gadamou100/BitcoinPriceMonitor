@@ -21,9 +21,13 @@ namespace BitcoinPriceMonitor.Application.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IPagedList<PriceSnapshot>> GetAllPriceSnapshots(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 20, bool orderByDate = false, bool orderByDateDesc = false, bool orderByPrice = false, bool orderByPriceDesc = false)
+        public async Task<IPagedList<PriceSnapshot>> GetAllPriceSnapshots(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false,  bool orderByPrice = false, bool descending = false)
         {
-            var orderBy = BuildOrderBy(orderByDate, orderByDateDesc, orderByPrice, orderByPriceDesc);
+            if(pageNo<0)
+                pageNo= 0;
+            if(pageSize<0)
+                pageSize= 10;
+            var orderBy = BuildOrderBy(orderByDate, orderByPrice, descending);
             var predicate = BuildPredicate(dateFilter, sourceFilter);
             var model = await _unitOfWork.GetRepository<PriceSnapshot>()
                 .GetPagedListAsync(pageSize: pageSize, pageIndex: pageNo, include: p => p.Include(x => x.PriceSource), orderBy: orderBy, predicate: predicate);
@@ -31,17 +35,25 @@ namespace BitcoinPriceMonitor.Application.Services
             return model;
         }
 
-        private static Func<IQueryable<PriceSnapshot>, IOrderedQueryable<PriceSnapshot>> BuildOrderBy(bool orderByDate = false, bool oderByDateDesc = false, bool orderByPrice = false, bool orderByPriceDesc = false)
+        private static Func<IQueryable<PriceSnapshot>, IOrderedQueryable<PriceSnapshot>> BuildOrderBy(bool orderByDate = false, bool orderByPrice = false, bool descending = false)
         {
             Func<IQueryable<PriceSnapshot>, IOrderedQueryable<PriceSnapshot>> result = p => p.OrderBy(x => x.RetrievedTimeStamp);
             //By Default we order by retrived date.
             if (orderByDate == false && orderByPrice == false)
-                return result;
+                return descending ? p => p.OrderByDescending(x => x.RetrievedTimeStamp) : result;
             if (orderByPrice)
-                result = orderByPriceDesc ? (p => p.OrderByDescending(x => x.Value)) : (p => p.OrderBy(x => x.Value));
+            {
 
-            if (orderByDate)
-                result = oderByDateDesc ? (p => p.OrderByDescending(x => x.RetrievedTimeStamp)) : (p => p.OrderBy(x => x.RetrievedTimeStamp));
+                if (orderByDate)
+                    result = descending
+                        ? (p => p.OrderByDescending(x => x.Value).ThenByDescending(x => x.RetrievedTimeStamp))
+                        : (p => p.OrderBy(x => x.Value).ThenBy(x => x.RetrievedTimeStamp));
+                else
+                    result = descending ? (p => p.OrderByDescending(x => x.Value)) : (p => p.OrderBy(x => x.Value));
+            
+            }
+            else if (orderByDate)
+                result = descending ? (p => p.OrderByDescending(x => x.RetrievedTimeStamp)) : (p => p.OrderBy(x => x.RetrievedTimeStamp));
 
             return result;
         }
@@ -52,7 +64,7 @@ namespace BitcoinPriceMonitor.Application.Services
             var dateEnd = dateFilter == null ? (DateTime)SqlDateTime.MaxValue : dateFilter.Value.Date.AddDays(1).AddMilliseconds(-1);
 
             Expression<Func<PriceSnapshot, bool>> result = p => (p.RetrievedTimeStamp >= dateStart && p.RetrievedTimeStamp <= dateEnd)
-            && (p.PriceSourceId == sourceFilter || sourceFilter == null);
+            && (sourceFilter == null || p.PriceSource.Name.Contains(sourceFilter) );
             return result;
         }
     }

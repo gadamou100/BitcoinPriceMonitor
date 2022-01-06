@@ -14,9 +14,9 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSnapShotController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false, bool orderByPrice = false, bool descending = false)
         {
-            var model  = await _priceSnapshotService.GetAllPriceSnapshots();
+            var model  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
             return View(model);
         }
 
