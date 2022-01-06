@@ -4,6 +4,7 @@ using BitCoinPriceMonitor.Infrastrucutre.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BitCoinPriceMonitor.Infrastrucutre.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220105234726_IncreasePrecission")]
+    partial class IncreasePrecission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +30,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comments")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -101,7 +104,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance.Migrations
                         new
                         {
                             Id = "627a8a25-0000-0000-0000-000000000001",
-                            CreatedTimeStamp = new DateTime(2022, 1, 5, 23, 49, 46, 670, DateTimeKind.Utc).AddTicks(8330),
+                            CreatedTimeStamp = new DateTime(2022, 1, 5, 23, 47, 26, 559, DateTimeKind.Utc).AddTicks(5887),
                             CreatorId = "00000000-0000-0000-0000-000000000000",
                             Name = "Bit Stamp",
                             Url = "https://www.bitstamp.net/api/ticker/"
@@ -109,7 +112,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance.Migrations
                         new
                         {
                             Id = "627a8a25-0000-0000-0000-000000000002",
-                            CreatedTimeStamp = new DateTime(2022, 1, 5, 23, 49, 46, 670, DateTimeKind.Utc).AddTicks(8363),
+                            CreatedTimeStamp = new DateTime(2022, 1, 5, 23, 47, 26, 559, DateTimeKind.Utc).AddTicks(5926),
                             CreatorId = "00000000-0000-0000-0000-000000000000",
                             Name = "Coin Base",
                             Url = "https://api.pro.coinbase.com/products/ADA-USD/ticker"

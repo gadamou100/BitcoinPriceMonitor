@@ -20,7 +20,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
             base.OnModelCreating(builder);
             builder.Entity<PriceSnapshot>()
                 .HasIndex(p => p.RetrievedTimeStamp);
-            builder.Entity<PriceSnapshot>().Property(p => p.Value).HasPrecision(2);
+            builder.Entity<PriceSnapshot>().Property(p => p.Value);
             builder.Entity<PriceSnapshot>().Property(p => p.Comments).HasMaxLength(1024);
 
             builder.Entity<PriceSource>().Property(p => p.Name).HasMaxLength(256);

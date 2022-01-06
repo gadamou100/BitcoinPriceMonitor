@@ -45,6 +45,17 @@
 </table>
 <script>
     function getLatestPrice(id){
-        console.log(id);
+         $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetLatestPriceFromSource")",
+            data: {source: id},
+            dataType: "json",
+            success: function (msg) {
+                $("#latestPriceLabel_"+id).text(msg);
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        }); 
     }
 </script>

@@ -1,6 +1,7 @@
 ﻿using BitcoinPriceMonitor.Application.DTOs;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Domain.Constants;
+using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
 using CSharpFunctionalExtensions;
@@ -23,10 +24,19 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Utitlities
             var result = new PriceSnapshot
             {
                 PriceSourceId = SourceSeededIds.BitStamp,
-                Value = decimal.Parse(value.last),
-                RetrievedTimeStamp = new DateTime(long.Parse(value.timestamp))
+                Value = decimal.Parse(value.last).Round(),
+                RetrievedTimeStamp = UnixTimeStampToDateTime(long.Parse(value.timestamp))
             };
             return result;
         }
+
+        private static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp).ToUniversalTime();
+            return dateTime;
+        }
+
     }
 }

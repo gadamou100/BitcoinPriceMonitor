@@ -1,6 +1,7 @@
 ﻿using BitcoinPriceMonitor.Application.DTOs;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Domain.Constants;
+using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
 using CSharpFunctionalExtensions;
@@ -23,7 +24,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Utitlities
             var result = new PriceSnapshot
             {
                 PriceSourceId = SourceSeededIds.CoinBase,
-                Value = decimal.Parse(value.price),
+                Value = decimal.Parse(value.price).Round(),
                 RetrievedTimeStamp = value.time
             };
             return result;

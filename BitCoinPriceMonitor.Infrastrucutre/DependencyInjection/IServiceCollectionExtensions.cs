@@ -25,6 +25,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
                     .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddTransient<IPriceSourceServices, PriceSourceServices>();
+            services.AddTransient<IPriceSnapshotService, PriceSnapshotService>();
             services.AddTransient<IHttpGetter, HttpClientWrapper>();
             services.AddTransient<IJsonParserToPriceSnapshotFactory, JsonParserFactory>();
             services.AddHostedService<SnapShotSaverBackgroundService>();
