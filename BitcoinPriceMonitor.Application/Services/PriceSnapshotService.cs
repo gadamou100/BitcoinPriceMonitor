@@ -21,14 +21,14 @@ namespace BitcoinPriceMonitor.Application.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IPagedList<PriceSnapshot>> GetAllPriceSnapshots(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false,  bool orderByPrice = false, bool descending = false)
+        public async Task<IPagedList<PriceSnapshot>> GetAllPriceSnapshots(DateTime? dateFilter = null, DateTime? endDateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false,  bool orderByPrice = false, bool descending = false)
         {
             if(pageNo<0)
                 pageNo= 0;
             if(pageSize<0)
                 pageSize= 10;
             var orderBy = BuildOrderBy(orderByDate, orderByPrice, descending);
-            var predicate = BuildPredicate(dateFilter, sourceFilter);
+            var predicate = BuildPredicate(dateFilter,endDateFilter, sourceFilter);
             var model = await _unitOfWork.GetRepository<PriceSnapshot>()
                 .GetPagedListAsync(pageSize: pageSize, pageIndex: pageNo, include: p => p.Include(x => x.PriceSource), orderBy: orderBy, predicate: predicate);
         
@@ -58,10 +58,14 @@ namespace BitcoinPriceMonitor.Application.Services
             return result;
         }
 
-        private static Expression<Func<PriceSnapshot, bool>> BuildPredicate(DateTime? dateFilter = null, string? sourceFilter = null)
+        private static Expression<Func<PriceSnapshot, bool>> BuildPredicate(DateTime? dateFilter = null, DateTime? endDateFilter = null, string? sourceFilter = null)
         {
-            var dateStart = dateFilter == null ? (DateTime) SqlDateTime.MinValue : dateFilter.Value.Date;
-            var dateEnd = dateFilter == null ? (DateTime)SqlDateTime.MaxValue : dateFilter.Value.Date.AddDays(1).AddMilliseconds(-1);
+            var dateStart = dateFilter == null || dateFilter < (DateTime) SqlDateTime.MinValue 
+                ? (DateTime) SqlDateTime.MinValue 
+                : dateFilter.Value.Date;
+            var dateEnd = endDateFilter == null || endDateFilter>=(DateTime)SqlDateTime.MaxValue 
+                ? (DateTime)SqlDateTime.MaxValue 
+                : endDateFilter.Value.Date.AddDays(1).AddMilliseconds(-1);
 
             Expression<Func<PriceSnapshot, bool>> result = p => (p.RetrievedTimeStamp >= dateStart && p.RetrievedTimeStamp <= dateEnd)
             && (sourceFilter == null || p.PriceSource.Name.ToLower().Contains(sourceFilter.ToLower()) );

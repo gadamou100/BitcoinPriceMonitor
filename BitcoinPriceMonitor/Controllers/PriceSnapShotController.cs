@@ -15,9 +15,11 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSnapShotController
-        public async Task<ActionResult> Index(DateTime? dateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false, bool orderByPrice = false, bool descending = false)
+        public async Task<ActionResult> Index(DateTime? dateFilter = null, DateTime? endDateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false, bool orderByPrice = false, bool descending = false)
         {
-            var listItems  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
+            if (dateFilter != null && endDateFilter != null && dateFilter > endDateFilter)
+                Swap(ref endDateFilter, ref dateFilter);
+            var listItems  = await _priceSnapshotService.GetAllPriceSnapshots(dateFilter,endDateFilter,sourceFilter,pageNo,pageSize,orderByDate,orderByPrice,descending);
             var viewModel = new PricesIndexViewModel
             {
                 ListItems = listItems,
@@ -25,9 +27,17 @@ namespace BitcoinPriceMonitor.Controllers
                 SortByPrice = orderByPrice,
                 SortFilter  = sourceFilter,
                 DateFilter = dateFilter,
+                EndDateFilter = endDateFilter,
                 IsDescending = descending,
             };
             return View(viewModel);
+        }
+
+        private void Swap(ref DateTime? endDateFilter, ref DateTime? dateFilter)
+        {
+            var temp = dateFilter;
+            dateFilter = endDateFilter;
+            endDateFilter = temp;
         }
 
         // GET: PriceSnapShotController/Details/5
