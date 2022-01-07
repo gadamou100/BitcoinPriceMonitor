@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitCoinPriceMonitor.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Application.Tests", "BitcoinPriceMonitor.Application.Tests\BitcoinPriceMonitor.Application.Tests.csproj", "{EF1E8446-33B7-45BB-94D7-D00158BEC841}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Domain.Tests", "BitcoinPriceMonitor.Domain.Tests\BitcoinPriceMonitor.Domain.Tests.csproj", "{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{EF1E8446-33B7-45BB-94D7-D00158BEC841}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF1E8446-33B7-45BB-94D7-D00158BEC841}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF1E8446-33B7-45BB-94D7-D00158BEC841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{8FCBC2FF-3D52-4875-A894-358491DAE452} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
 		{957D7CEB-1C05-4A68-932B-AD193B4E68BB} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
 		{EF1E8446-33B7-45BB-94D7-D00158BEC841} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
+		{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76EF1564-29A6-40DB-8FB8-8D2ADF787372}
