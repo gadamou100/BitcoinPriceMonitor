@@ -40,7 +40,6 @@ namespace BitcoinPriceMonitor.Tests.IntegrationTests
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
             var service = serviceProvider.GetRequiredService<IPriceSourceService>();
             var controller = new PriceSourceController(service);
-            var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
             //Act
             var actionResult = await controller.GetLatestPriceFromSource(SourceSeededIds.BitStamp);
             //Assert

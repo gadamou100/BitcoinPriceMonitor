@@ -25,7 +25,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(connectionString))
                     .AddUnitOfWork<ApplicationDbContext>()
-                    .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             else
                 services.AddDbContext<ApplicationDbContext>(options =>
