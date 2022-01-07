@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor.Domain"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B474D1B2-5D52-4D86-BF36-3B9E644D4818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Tests", "BitcoinPriceMonitor.Tests\BitcoinPriceMonitor.Tests.csproj", "{577AD4BA-0C82-47C2-8E35-4219F4B55EDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor.Tests", "BitcoinPriceMonitor.Tests\BitcoinPriceMonitor.Tests.csproj", "{577AD4BA-0C82-47C2-8E35-4219F4B55EDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsCommon", "TestsCommon\TestsCommon.csproj", "{8FCBC2FF-3D52-4875-A894-358491DAE452}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsCommon", "TestsCommon\TestsCommon.csproj", "{8FCBC2FF-3D52-4875-A894-358491DAE452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitCoinPriceMonitor.Infrastructure.Tests", "BitCoinPriceMonitor.Infrastructure.Tests\BitCoinPriceMonitor.Infrastructure.Tests.csproj", "{957D7CEB-1C05-4A68-932B-AD193B4E68BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{8FCBC2FF-3D52-4875-A894-358491DAE452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FCBC2FF-3D52-4875-A894-358491DAE452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FCBC2FF-3D52-4875-A894-358491DAE452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{957D7CEB-1C05-4A68-932B-AD193B4E68BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957D7CEB-1C05-4A68-932B-AD193B4E68BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957D7CEB-1C05-4A68-932B-AD193B4E68BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957D7CEB-1C05-4A68-932B-AD193B4E68BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{577AD4BA-0C82-47C2-8E35-4219F4B55EDF} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
 		{8FCBC2FF-3D52-4875-A894-358491DAE452} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
+		{957D7CEB-1C05-4A68-932B-AD193B4E68BB} = {B474D1B2-5D52-4D86-BF36-3B9E644D4818}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76EF1564-29A6-40DB-8FB8-8D2ADF787372}

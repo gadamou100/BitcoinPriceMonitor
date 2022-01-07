@@ -10,24 +10,24 @@ namespace BitcoinPriceMonitor.Controllers
 {
     public class PriceSourceController : Controller
     {
-        private readonly IPriceSourceServices _priceSourceServices;
+        private readonly IPriceSourceService _priceSourceService;
 
-        public PriceSourceController(IPriceSourceServices priceSourceService)
+        public PriceSourceController(IPriceSourceService priceSourceService)
         {
-            _priceSourceServices = priceSourceService;
+            _priceSourceService = priceSourceService;
         }
 
         // GET: PriceSourceController
         public async Task <ActionResult> Index()
         {
-            var model =await _priceSourceServices.GetPriceSources();
+            var model =await _priceSourceService.GetPriceSources();
             return View(model);
         }
 
         public async Task<ActionResult> GetLatestPriceFromSource(string source)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _priceSourceServices.GetLatestPriceFromSource(source, userId);
+            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ??  string.Empty;
+            var result = await _priceSourceService.GetLatestPriceFromSource(source, userId);
             return new JsonResult(result);
         }
 

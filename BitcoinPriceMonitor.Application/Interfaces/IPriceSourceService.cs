@@ -2,7 +2,7 @@
 
 namespace BitcoinPriceMonitor.Application.Interfaces
 {
-    public interface IPriceSourceServices
+    public interface IPriceSourceService
     {
         Task<decimal> GetLatestPriceFromSource(string sourceId, string userId);
         Task<IEnumerable<PriceSource>> GetPriceSources();

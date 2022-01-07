@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BitCoinPriceMonitor.Infrastrucutre.Factories
 {
-    internal class JsonParserFactory : IJsonParserToPriceSnapshotFactory
+    public class JsonParserFactory : IJsonParserToPriceSnapshotFactory
     {
         public Maybe<IJsonParserToPriceSnapshot> CreateParser(string sourceId)
         {

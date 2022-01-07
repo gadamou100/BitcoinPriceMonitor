@@ -31,7 +31,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(connectionString))
                     .AddUnitOfWork<ApplicationDbContext>();
-            services.AddTransient<IPriceSourceServices, PriceSourceServices>();
+            services.AddTransient<IPriceSourceService, PriceSourceService>();
             services.AddTransient<IPriceSnapshotService, PriceSnapshotService>();
             services.AddTransient<IHttpGetter, HttpClientWrapper>();
             services.AddTransient<IJsonParserToPriceSnapshotFactory, JsonParserFactory>();

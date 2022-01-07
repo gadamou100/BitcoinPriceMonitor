@@ -18,7 +18,7 @@ namespace BitcoinPriceMonitor.Tests.UnitTests
         {
             //Arrange
             IEnumerable<PriceSource> expectedResult = GetData();
-            var serviceMock = new Mock<IPriceSourceServices>();
+            var serviceMock = new Mock<IPriceSourceService>();
             serviceMock.Setup(x => x.GetPriceSources()).Returns(Task.FromResult(expectedResult));
             var controller = new PriceSourceController(serviceMock.Object);
             //Act
@@ -28,6 +28,22 @@ namespace BitcoinPriceMonitor.Tests.UnitTests
             var model = viewResult?.Model as IEnumerable<PriceSource>;
             Assert.Equal(2, model?.Count());
             Assert.Equal("00000000-0000-0000-0000-000000000001", model?.FirstOrDefault()?.Id);
+        }
+        [Fact]
+        public async Task GetLatestPriceFromSourceTest()
+        {
+            //Arrange
+            decimal expectedDummyValue = (decimal)2323.45;
+            var serviceMock = new Mock<IPriceSourceService>();
+            serviceMock.Setup(p => p.GetLatestPriceFromSource("test", "")).Returns(Task.FromResult(expectedDummyValue));
+            var controller = new PriceSourceController(serviceMock.Object);
+
+            //Act
+            var actionResult = await controller.GetLatestPriceFromSource("test");
+            //Assert
+            var viewResult = actionResult as JsonResult;
+            var value = (decimal)(viewResult?.Value ?? 0);
+            Assert.Equal(expectedDummyValue, value);
         }
 
         private static IEnumerable<PriceSource> GetData()

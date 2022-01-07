@@ -2,6 +2,7 @@
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
+using Coravel;
 using Coravel.Queuing.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace BitcoinPriceMonitor.Application.Services
 {
-    public class PriceSourceServices : IPriceSourceServices
+    public class PriceSourceService : IPriceSourceService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IServiceProvider _serviceProvider;
-        public PriceSourceServices(IServiceProvider serviceProvider)
+        public PriceSourceService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _unitOfWork = _serviceProvider.GetRequiredService<IUnitOfWork>();
