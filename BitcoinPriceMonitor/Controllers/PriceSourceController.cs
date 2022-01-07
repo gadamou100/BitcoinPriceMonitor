@@ -12,9 +12,9 @@ namespace BitcoinPriceMonitor.Controllers
     {
         private readonly IPriceSourceServices _priceSourceServices;
 
-        public PriceSourceController(IPriceSourceServices unitOfWork)
+        public PriceSourceController(IPriceSourceServices priceSourceService)
         {
-            _priceSourceServices = unitOfWork;
+            _priceSourceServices = priceSourceService;
         }
 
         // GET: PriceSourceController

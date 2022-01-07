@@ -18,13 +18,19 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
 {
     public static class IServiceCollectionExtensions
     {
-        public static void InjectDependencies(this IServiceCollection services, string connectionString)
+        public static void InjectDependencies(this IServiceCollection services, string connectionString, bool injectIdentityServce=true)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+
+            if (injectIdentityServce)
+                services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(connectionString))
                     .AddUnitOfWork<ApplicationDbContext>()
                     .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+            else
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(connectionString))
+                    .AddUnitOfWork<ApplicationDbContext>();
             services.AddTransient<IPriceSourceServices, PriceSourceServices>();
             services.AddTransient<IPriceSnapshotService, PriceSnapshotService>();
             services.AddTransient<IHttpGetter, HttpClientWrapper>();
