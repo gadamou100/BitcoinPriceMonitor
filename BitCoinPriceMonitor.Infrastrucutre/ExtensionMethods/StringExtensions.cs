@@ -14,10 +14,18 @@ namespace BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods
 
         public static Maybe<TObject> Deserialize<TObject>(this string json)
         {
-            if(json.IsNullOrEmpty())
+            try
+            {
+
+                if (json.IsNullOrEmpty())
+                    return Maybe<TObject>.None;
+                var desObject = JsonSerializer.Deserialize<TObject>(json);
+                return desObject != null ? desObject : Maybe<TObject>.None;
+            }
+            catch 
+            {
                 return Maybe<TObject>.None;
-            var desObject = JsonSerializer.Deserialize<TObject>(json);
-            return desObject != null ? desObject : Maybe<TObject>.None;
+            }
         }
     }
 }

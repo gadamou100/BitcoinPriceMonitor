@@ -17,17 +17,24 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Utitlities
     {
         public Maybe<PriceSnapshot> ParseJsonToPriceSnapshot(string json)
         {
-            var dto = json.Deserialize<BitstampDto>();
-            if(dto.HasNoValue)
-                return Maybe<PriceSnapshot>.None;
-            BitstampDto value = dto.Value;
-            var result = new PriceSnapshot
+            try
             {
-                PriceSourceId = SourceSeededIds.BitStamp,
-                Value = decimal.Parse(value.last).Round(),
-                RetrievedTimeStamp = long.Parse(value.timestamp).UnixTimeStampToDateTime()
-            };
-            return result;
+                var dto = json.Deserialize<BitstampDto>();
+                if (dto.HasNoValue)
+                    return Maybe<PriceSnapshot>.None;
+                BitstampDto value = dto.Value;
+                var result = new PriceSnapshot
+                {
+                    PriceSourceId = SourceSeededIds.BitStamp,
+                    Value = decimal.Parse(value.last).Round(),
+                    RetrievedTimeStamp = long.Parse(value.timestamp).UnixTimeStampToDateTime()
+                };
+                return result;
+            }
+            catch 
+            {
+              return Maybe<PriceSnapshot>.None;
+            }
         }
 
        

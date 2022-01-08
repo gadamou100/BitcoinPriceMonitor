@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using TestsCommon;
 using Xunit;
 
-namespace BitcoinPriceMonitor.Application.Tests.UnitTests
+namespace BitcoinPriceMonitor.Application.Tests.IntegrationTests
 {
     public class PriceSourceServiceUnitTests
     {

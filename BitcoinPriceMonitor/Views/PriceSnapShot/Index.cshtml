@@ -115,17 +115,20 @@
                     @Html.DisplayFor(modelItem => item.Value)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RetrievedTimeStamp)
+                    @{
+                        var localTime = item.RetrievedTimeStamp.ToLocalTime();
+                    }
+                    @Html.DisplayFor(modelItem => localTime)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Comments)
                 </td>
-
+@*
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
+                </td>*@
             </tr>
         }
     </tbody>

@@ -43,7 +43,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
                 CreatedTimeStamp = DateTime.UtcNow,
                 Name = "Coin Base",
                 CreatorId = Guid.Empty.ToString(),
-                Url = "https://api.pro.coinbase.com/products/ADA-USD/ticker"
+                Url = "https://api.pro.coinbase.com/products/BTC-USD/ticker"
             });
         }
     }

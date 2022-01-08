@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using TestsCommon;
 using Xunit;
 
-namespace BitcoinPriceMonitor.Application.Tests.UnitTests
+namespace BitcoinPriceMonitor.Application.Tests.IntegrationTests
 {
     public class PriceSnapShotServiceUnitTests
     {
@@ -33,7 +33,7 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
             var priceSourceService = new PriceSourceService(serviceProvider);
             //Act
-            var result = await priceSourceService.GetLatestPriceFromSource(SourceSeededIds.BitStamp,"");
+            var result = await priceSourceService.GetLatestPriceFromSource(SourceSeededIds.BitStamp, "");
             //Assert
             Assert.True(result > 0);
         }

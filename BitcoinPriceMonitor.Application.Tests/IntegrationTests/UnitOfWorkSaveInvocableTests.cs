@@ -28,10 +28,10 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
             var payload = new PriceSnapshot
             {
                 Id = id,
-                CreatedTimeStamp = DateTime.Now,
+                CreatedTimeStamp = DateTime.UtcNow,
                 PriceSourceId = SourceSeededIds.CoinBase,
-                RetrievedTimeStamp = DateTime.Now,
-                Value = 10,
+                RetrievedTimeStamp = DateTime.UtcNow,
+                Value = (decimal)44350.35,
                 CreatorId=""
             };
             var loggerMock = new Mock<ILogger<UnitOfWorkSaveInvocable>>();
@@ -41,7 +41,7 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
             await invocable.Invoke();
             //Assert
             var storedEnity = await unitOfWork2.GetRepository<PriceSnapshot>().GetFirstOrDefaultAsync( predicate: p=>p.Id== id);
-            Assert.Equal(10, storedEnity.Value);
+            Assert.Equal((decimal)44350.35, storedEnity.Value);
 
         }
     }

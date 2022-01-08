@@ -29,5 +29,17 @@ namespace BitCoinPriceMonitor.Infrastructure.Tests
 
 
         }
+        [Fact]
+        public async Task ParseInvalidJsonToPriceSnapshotTest()
+        {
+            //Arrange
+            var json = "{\"trade_id\"=52799476,\"price\":\"1.2036\",\"size\":\"162.65\",\"time\":\"2022-01-07T07:43:19.842637Z\",\"bid\":\"1.2028\",\"ask\":\"1.2031\",\"volume\":\"109960472.31\"}";
+            var time = DateTime.Parse("2022-01-07T07:43:19.842637Z").ToUniversalTime();
+            var parser = new CoinBaseJsonParser();
+
+            //Act
+            var result = parser.ParseJsonToPriceSnapshot(json);
+            Assert.True(result.HasNoValue);
+        }
     }
 }

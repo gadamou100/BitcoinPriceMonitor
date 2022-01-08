@@ -1,8 +1,10 @@
 using BitcoinPriceMonitor;
 using BitCoinPriceMonitor.Infrastrucutre.DependencyInjection;
 using BitCoinPriceMonitor.Infrastrucutre.MiddleWare;
+using BitCoinPriceMonitor.Infrastrucutre.Persistance;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddMvc()
     .AddRazorRuntimeCompilation();
 builder.InjectLogger();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,4 +43,12 @@ app.MapControllerRoute(
 
 
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
 app.Run();
