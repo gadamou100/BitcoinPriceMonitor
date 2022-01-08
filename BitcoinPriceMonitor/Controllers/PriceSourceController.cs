@@ -1,6 +1,7 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitCoinPriceMonitor.Domain.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace BitcoinPriceMonitor.Controllers
 {
+    [Authorize]
     public class PriceSourceController : Controller
     {
         private readonly IPriceSourceService _priceSourceService;

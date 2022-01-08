@@ -1,10 +1,12 @@
 ﻿using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitcoinPriceMonitor.Controllers
 {
+    [Authorize]
     public class PriceSnapShotController : Controller
     {
         private readonly IPriceSnapshotService _priceSnapshotService;
