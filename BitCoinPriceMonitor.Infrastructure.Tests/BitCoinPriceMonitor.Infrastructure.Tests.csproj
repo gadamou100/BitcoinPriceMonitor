@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastrucutre.csproj" />
+    <ProjectReference Include="..\BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastructure.csproj" />
     <ProjectReference Include="..\TestsCommon\TestsCommon.csproj" />
   </ItemGroup>
 

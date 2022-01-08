@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor", "BitcoinPriceMonitor\BitcoinPriceMonitor.csproj", "{672B50F8-B2AD-4543-BECB-6836E9EFABD8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitCoinPriceMonitor.Infrastrucutre", "BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastrucutre.csproj", "{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitCoinPriceMonitor.Infrastructure", "BitCoinPriceMonitor.Infrastrucutre\BitCoinPriceMonitor.Infrastructure.csproj", "{1695A4CF-24CE-4DB4-AE0A-2D0F934601C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor.Application", "BitcoinPriceMonitor.Application\BitcoinPriceMonitor.Application.csproj", "{80492709-934E-4209-9E22-F94EB6AAF0B8}"
 EndProject
@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsCommon", "TestsCommon\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitCoinPriceMonitor.Infrastructure.Tests", "BitCoinPriceMonitor.Infrastructure.Tests\BitCoinPriceMonitor.Infrastructure.Tests.csproj", "{957D7CEB-1C05-4A68-932B-AD193B4E68BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Application.Tests", "BitcoinPriceMonitor.Application.Tests\BitcoinPriceMonitor.Application.Tests.csproj", "{EF1E8446-33B7-45BB-94D7-D00158BEC841}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor.Application.Tests", "BitcoinPriceMonitor.Application.Tests\BitcoinPriceMonitor.Application.Tests.csproj", "{EF1E8446-33B7-45BB-94D7-D00158BEC841}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinPriceMonitor.Domain.Tests", "BitcoinPriceMonitor.Domain.Tests\BitcoinPriceMonitor.Domain.Tests.csproj", "{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinPriceMonitor.Domain.Tests", "BitcoinPriceMonitor.Domain.Tests\BitcoinPriceMonitor.Domain.Tests.csproj", "{041A2379-D47B-4F2F-92B0-1E0E0C95DDE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
