@@ -3,6 +3,8 @@ using BitcoinPriceMonitor.Application.Services;
 using BitcoinPriceMonitor.Domain.Constants;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,8 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
                 Value = 10,
                 CreatorId=""
             };
-            UnitOfWorkSaveInvocable invocable = new UnitOfWorkSaveInvocable(unitOfWork);
+            var loggerMock = new Mock<ILogger<UnitOfWorkSaveInvocable>>();
+            UnitOfWorkSaveInvocable invocable = new UnitOfWorkSaveInvocable(unitOfWork,loggerMock.Object);
             invocable.Payload = payload;
             //Act
             await invocable.Invoke();

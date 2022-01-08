@@ -2,6 +2,7 @@
 using BitcoinPriceMonitor.Controllers;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace BitcoinPriceMonitor.Tests.UnitTests
             IEnumerable<PriceSource> expectedResult = GetData();
             var serviceMock = new Mock<IPriceSourceService>();
             serviceMock.Setup(x => x.GetPriceSources()).Returns(Task.FromResult(expectedResult));
-            var controller = new PriceSourceController(serviceMock.Object);
+            var mockLooger = new Mock<ILogger<PriceSourceController>>();
+            var controller = new PriceSourceController(serviceMock.Object,mockLooger.Object);
             //Act
             var actionResult = await controller.Index();
             //Assert
@@ -36,7 +38,8 @@ namespace BitcoinPriceMonitor.Tests.UnitTests
             decimal expectedDummyValue = (decimal)2323.45;
             var serviceMock = new Mock<IPriceSourceService>();
             serviceMock.Setup(p => p.GetLatestPriceFromSource("test", "")).Returns(Task.FromResult(expectedDummyValue));
-            var controller = new PriceSourceController(serviceMock.Object);
+            var mockLooger = new Mock<ILogger<PriceSourceController>>();
+            var controller = new PriceSourceController(serviceMock.Object,mockLooger.Object);
 
             //Act
             var actionResult = await controller.GetLatestPriceFromSource("test");

@@ -1,5 +1,8 @@
+using BitcoinPriceMonitor;
 using BitCoinPriceMonitor.Infrastrucutre.DependencyInjection;
+using BitCoinPriceMonitor.Infrastrucutre.MiddleWare;
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,7 @@ builder.Services.InjectDependencies(connectionString);
 builder.Services.AddRazorPages();
 builder.Services.AddMvc()
     .AddRazorRuntimeCompilation();
-
+builder.InjectLogger();
 
 var app = builder.Build();
 
@@ -24,7 +27,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseCustomLoggingMidleware();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

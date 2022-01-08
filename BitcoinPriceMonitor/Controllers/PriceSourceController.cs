@@ -13,10 +13,11 @@ namespace BitcoinPriceMonitor.Controllers
     public class PriceSourceController : Controller
     {
         private readonly IPriceSourceService _priceSourceService;
-
-        public PriceSourceController(IPriceSourceService priceSourceService)
+        private readonly ILogger<PriceSourceController> _logger;
+        public PriceSourceController(IPriceSourceService priceSourceService, ILogger<PriceSourceController> logger)
         {
             _priceSourceService = priceSourceService;
+            _logger = logger;
         }
 
         // GET: PriceSourceController
@@ -28,9 +29,17 @@ namespace BitcoinPriceMonitor.Controllers
 
         public async Task<ActionResult> GetLatestPriceFromSource(string source)
         {
-            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ??  string.Empty;
-            var result = await _priceSourceService.GetLatestPriceFromSource(source, userId);
-            return new JsonResult(result);
+            try
+            {
+                var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+                var result = await _priceSourceService.GetLatestPriceFromSource(source, userId);
+                return new JsonResult(result);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"{e}");
+                return new JsonResult(e.Message) { StatusCode = 500};
+            }
         }
 
         // GET: PriceSourceController/Details/5

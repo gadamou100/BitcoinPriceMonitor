@@ -5,6 +5,8 @@ using BitcoinPriceMonitor.Domain.Constants;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,8 @@ namespace BitcoinPriceMonitor.Tests.IntegrationTests
             //Arrange
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
             var service = serviceProvider.GetRequiredService<IPriceSourceService>();
-            var controller = new PriceSourceController(service);
+            var mockLooger = new Mock<ILogger<PriceSourceController>>();
+            var controller = new PriceSourceController(service,mockLooger.Object);
             //Act
             var actionResult = await controller.Index();
             //Assert
@@ -39,7 +42,9 @@ namespace BitcoinPriceMonitor.Tests.IntegrationTests
             //Arrange
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
             var service = serviceProvider.GetRequiredService<IPriceSourceService>();
-            var controller = new PriceSourceController(service);
+            var mockLooger = new Mock<ILogger<PriceSourceController>>();
+
+            var controller = new PriceSourceController(service,mockLooger.Object);
             //Act
             var actionResult = await controller.GetLatestPriceFromSource(SourceSeededIds.BitStamp);
             //Assert

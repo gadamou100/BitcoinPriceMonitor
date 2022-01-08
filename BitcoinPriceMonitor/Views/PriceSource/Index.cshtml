@@ -54,7 +54,9 @@
                 $("#latestPriceLabel_"+id).text(msg);
             },
             error: function (req, status, error) {
-                alert(error);
+                alert("Error: "+req.responseText);
+                console.log(status);
+                console.log(error);
             }
         }); 
     }

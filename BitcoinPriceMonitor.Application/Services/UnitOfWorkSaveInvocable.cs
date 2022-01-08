@@ -1,6 +1,7 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Coravel.Invocable;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,10 +15,13 @@ namespace BitcoinPriceMonitor.Application.Services
     {
         public PriceSnapshot Payload { get; set; }
         public readonly IUnitOfWork _unitOfWork;
+        public readonly ILogger<UnitOfWorkSaveInvocable> _logger;
 
-        public UnitOfWorkSaveInvocable(IUnitOfWork unitOfWork)
+
+        public UnitOfWorkSaveInvocable(IUnitOfWork unitOfWork, ILogger<UnitOfWorkSaveInvocable> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task Invoke()
@@ -31,8 +35,7 @@ namespace BitcoinPriceMonitor.Application.Services
             }
             catch (Exception e)
             {
-                //toodo replace with a loger after the addition of the logger.
-                Debug.WriteLine($"{e}");
+                _logger.LogError($"{e}");
             }
         }
     }
