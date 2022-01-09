@@ -38,11 +38,11 @@ namespace BitcoinPriceMonitor.Application.Services
             var source = await sourceTask;
             if (source == default)
                 throw new InvalidDataException($"Cannot found source with Id: {sourceId}");
-            var retriver = retrieverFactory.Create(sourceId);
-            if(retriver.HasNoValue)
-                throw new NotImplementedException($"Price Retriever for source {source.Name} is not implemented yes");
+            var externalRetriver = retrieverFactory.Create(sourceId);
+            if(externalRetriver.HasNoValue)
+                throw new NotImplementedException($"Price Retriever for source {source.Name} is not implemented");
 
-            var priceSnapShot = await retriver.Value.RetrieveLatestPrice(source);
+            var priceSnapShot = await externalRetriver.Value.RetrieveLatestPrice(source);
             if (priceSnapShot.HasNoValue)
                 throw new PriceSanpshotNotFoundException(); 
             var priceSnapShotValue = priceSnapShot.Value;
