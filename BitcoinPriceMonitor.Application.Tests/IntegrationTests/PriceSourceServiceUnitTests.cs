@@ -1,4 +1,5 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
+using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +25,12 @@ namespace BitcoinPriceMonitor.Application.Tests.IntegrationTests
         {
             //Arrange
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
-            var priceSnapShotService = new PriceSnapshotService(serviceProvider);
+            var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
+            var orderByBuilder = serviceProvider.GetRequiredService<IPriceSnapshotOrderByBuilder>();
+            var predicateBuilder = serviceProvider.GetRequiredService<IPriceSanpshotPredicateBuilder>();
+            var priceSnapShotService = new PriceSnapshotService(uow, predicateBuilder,orderByBuilder);
             //Act
-            var result = await priceSnapShotService.GetAllPriceSnapshots();
+            var result = await priceSnapShotService.GetPriceSnapshots();
             //Assert
             Assert.NotNull(result);
             Assert.NotEmpty(result.Items);

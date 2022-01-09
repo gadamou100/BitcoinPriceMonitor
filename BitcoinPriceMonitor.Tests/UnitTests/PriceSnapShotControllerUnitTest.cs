@@ -22,7 +22,7 @@ namespace BitcoinPriceMonitor.Tests.UnitTests
         {
             var pageListMock = MockPagedListGetter.GetPageListMock();
             var serviceMock = new Mock<IPriceSnapshotService>();
-            serviceMock.Setup(x => x.GetAllPriceSnapshots(null,null,null,0,10,false,false,false)).Returns(Task.FromResult(pageListMock.Object));
+            serviceMock.Setup(x => x.GetPriceSnapshots(It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(Task.FromResult(pageListMock.Object));
             var controller = new PriceSnapShotController(serviceMock.Object);
             //Act
             var actionResult = await controller.Index();

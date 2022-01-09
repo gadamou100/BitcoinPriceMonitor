@@ -25,5 +25,15 @@ namespace BitCoinPriceMonitor.Infrastructure.Tests
             Assert.True(result.HasValue);
             Assert.Equal(result.Value.GetType(), returnObject);   
         }
+        [Fact]
+        public async Task TryToCreateParserWirthInvalidSourceIdTest()
+        {
+            //Arranage
+            var jsonParserFactory = new JsonParserFactory();
+            //Act
+            var result = jsonParserFactory.CreateParser("Invalid Source Id");
+            //Assert
+            Assert.True(result.HasNoValue);
+        }
     }
 }
