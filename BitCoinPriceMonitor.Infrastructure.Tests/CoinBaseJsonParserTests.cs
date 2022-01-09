@@ -1,6 +1,6 @@
 ﻿using BitcoinPriceMonitor.Domain.Constants;
-using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
-using BitCoinPriceMonitor.Infrastrucutre.Utitlities;
+using BitCoinPriceMonitor.Infrastructure.ExtensionMethods;
+using BitCoinPriceMonitor.Infrastructure.Utitlities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

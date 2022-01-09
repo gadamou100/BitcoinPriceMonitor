@@ -3,7 +3,7 @@ using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Controllers;
 using BitcoinPriceMonitor.ViewModels;
 using BitCoinPriceMonitor.Domain.Data.Entities;
-using BitCoinPriceMonitor.Infrastrucutre.DependencyInjection;
+using BitCoinPriceMonitor.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -1,12 +1,12 @@
 ﻿using BitcoinPriceMonitor.Domain.Constants;
-using BitCoinPriceMonitor.Infrastrucutre.Utitlities;
+using BitCoinPriceMonitor.Infrastructure.Utitlities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using BitCoinPriceMonitor.Infrastrucutre.Factories;
+using BitCoinPriceMonitor.Infrastructure.Factories;
 namespace BitCoinPriceMonitor.Infrastructure.Tests
 {
     public class JsonParserFactoryTests

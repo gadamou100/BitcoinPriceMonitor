@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods
+namespace BitCoinPriceMonitor.Infrastructure.ExtensionMethods
 {
     public static class StringExtensions
     {

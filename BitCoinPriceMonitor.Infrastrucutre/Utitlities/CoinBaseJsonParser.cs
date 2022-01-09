@@ -3,7 +3,7 @@ using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Domain.Constants;
 using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
-using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
+using BitCoinPriceMonitor.Infrastructure.ExtensionMethods;
 using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BitCoinPriceMonitor.Infrastrucutre.Utitlities
+namespace BitCoinPriceMonitor.Infrastructure.Utitlities
 {
     public class CoinBaseJsonParser : IJsonParserToPriceSnapshot
     {

@@ -1,4 +1,4 @@
-﻿using BitCoinPriceMonitor.Infrastrucutre.DependencyInjection;
+﻿using BitCoinPriceMonitor.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TestsCommon

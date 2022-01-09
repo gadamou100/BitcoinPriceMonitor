@@ -1,4 +1,4 @@
-﻿using BitCoinPriceMonitor.Infrastrucutre.Network;
+﻿using BitCoinPriceMonitor.Infrastructure.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;

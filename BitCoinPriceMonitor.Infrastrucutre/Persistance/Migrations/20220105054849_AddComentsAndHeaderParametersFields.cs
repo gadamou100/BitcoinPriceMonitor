@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BitCoinPriceMonitor.Infrastrucutre.Persistance.Migrations
+namespace BitCoinPriceMonitor.Infrastructure.Persistance.Migrations
 {
     public partial class AddComentsAndHeaderParametersFields : Migration
     {

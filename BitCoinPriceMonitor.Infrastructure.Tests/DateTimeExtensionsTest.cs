@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
+using BitCoinPriceMonitor.Infrastructure.ExtensionMethods;
 namespace BitCoinPriceMonitor.Infrastructure.Tests
 {
     public class DateTimeExtensionsTest

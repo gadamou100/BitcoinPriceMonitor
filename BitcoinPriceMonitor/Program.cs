@@ -1,7 +1,7 @@
 using BitcoinPriceMonitor;
-using BitCoinPriceMonitor.Infrastrucutre.DependencyInjection;
-using BitCoinPriceMonitor.Infrastrucutre.MiddleWare;
-using BitCoinPriceMonitor.Infrastrucutre.Persistance;
+using BitCoinPriceMonitor.Infrastructure.DependencyInjection;
+using BitCoinPriceMonitor.Infrastructure.MiddleWare;
+using BitCoinPriceMonitor.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;

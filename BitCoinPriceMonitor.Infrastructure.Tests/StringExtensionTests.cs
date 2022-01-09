@@ -1,5 +1,5 @@
 using BitcoinPriceMonitor.Application.DTOs;
-using BitCoinPriceMonitor.Infrastrucutre.ExtensionMethods;
+using BitCoinPriceMonitor.Infrastructure.ExtensionMethods;
 using System;
 using Xunit;
 

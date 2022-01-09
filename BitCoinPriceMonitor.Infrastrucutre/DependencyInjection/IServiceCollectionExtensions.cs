@@ -1,21 +1,16 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
+using BitCoinPriceMonitor.Infrastructure.Factories;
+using BitCoinPriceMonitor.Infrastructure.Network;
+using BitCoinPriceMonitor.Infrastructure.Persistance;
 using BitCoinPriceMonitor.Infrastructure.Utitlities;
-using BitCoinPriceMonitor.Infrastrucutre.Factories;
-using BitCoinPriceMonitor.Infrastrucutre.Network;
-using BitCoinPriceMonitor.Infrastrucutre.Persistance;
 using Coravel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
+namespace BitCoinPriceMonitor.Infrastructure.DependencyInjection
 {
     public static class IServiceCollectionExtensions
     {
@@ -39,7 +34,7 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
             services.AddTransient<UnitOfWorkSaveInvocable>();
             services.AddTransient<IPriceSnapshotOrderByBuilder, PriceSnapshotOrderByBuilder>();
             services.AddTransient<IPriceSanpshotPredicateBuilder, PriceSanpshotPredicateBuilder>();
-
+            services.AddTransient<IExternalPriceRetriverFactory, ExternalPriceRetriverFactory>();
 
             services.AddQueue();
 

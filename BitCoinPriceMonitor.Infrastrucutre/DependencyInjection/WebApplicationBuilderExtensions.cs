@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
+namespace BitCoinPriceMonitor.Infrastructure.DependencyInjection
 {
     public static class WebApplicationBuilderExtensions
     {

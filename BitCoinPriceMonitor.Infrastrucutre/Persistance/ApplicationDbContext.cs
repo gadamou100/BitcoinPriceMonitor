@@ -3,7 +3,7 @@ using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BitCoinPriceMonitor.Infrastrucutre.Persistance
+namespace BitCoinPriceMonitor.Infrastructure.Persistance
 {
     public class ApplicationDbContext : IdentityDbContext
     {

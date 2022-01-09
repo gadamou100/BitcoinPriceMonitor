@@ -1,5 +1,6 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
+using BitcoinPriceMonitor.Domain.Exceptions;
 using BitcoinPriceMonitor.Domain.ExtensionMethods;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Coravel;
@@ -32,22 +33,18 @@ namespace BitcoinPriceMonitor.Application.Services
         {
 
             var sourceTask = _unitOfWork.GetRepository<PriceSource>()
-                   .GetFirstOrDefaultAsync(selector: s => new PriceSource { Name = s.Name, Url = s.Url, HeaderParameters = s.HeaderParameters }, predicate: p => p.Id == sourceId);
-            var httpGetter = _serviceProvider.GetService(typeof(IHttpGetter)) as IHttpGetter;
+                   .GetFirstOrDefaultAsync(selector: p=>p, predicate: p => p.Id == sourceId);        
+            var retrieverFactory = _serviceProvider.GetService(typeof(IExternalPriceRetriverFactory)) as IExternalPriceRetriverFactory;
             var source = await sourceTask;
             if (source == default)
                 throw new InvalidDataException($"Cannot found source with Id: {sourceId}");
+            var retriver = retrieverFactory.Create(sourceId);
+            if(retriver.HasNoValue)
+                throw new NotImplementedException($"Price Retriever for source {source.Name} is not implemented yes");
 
-            var httpResponse = await httpGetter.Get(source.Url, source.ConvertHeaderValuesToDictionary());
-            if (string.IsNullOrEmpty(httpResponse))
-                throw new InvalidDataException($"Server responded with an empty response");
-            var jsonParserFactory = _serviceProvider.GetService(typeof(IJsonParserToPriceSnapshotFactory)) as IJsonParserToPriceSnapshotFactory;
-            var jsonParser = jsonParserFactory.CreateParser(sourceId);
-            if (jsonParser.HasNoValue)
-                throw new NotImplementedException($"Parser for source: {source.Name} is not implemented");
-            var priceSnapShot = jsonParser.Value.ParseJsonToPriceSnapshot(httpResponse);
+            var priceSnapShot = await retriver.Value.RetrieveLatestPrice(source);
             if (priceSnapShot.HasNoValue)
-                throw new InvalidCastException($"Failed to parse the response json to {typeof(PriceSnapshot).FullName}");
+                throw new PriceSanpshotNotFoundException(); 
             var priceSnapShotValue = priceSnapShot.Value;
             priceSnapShotValue.Id = Guid.NewGuid().ToString();
             priceSnapShotValue.CreatedTimeStamp = DateTime.UtcNow;
