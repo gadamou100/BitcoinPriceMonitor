@@ -53,8 +53,8 @@ namespace BitcoinPriceMonitor.Application.Services
             priceSnapShotValue.CreatedTimeStamp = DateTime.UtcNow;
             priceSnapShotValue.CreatorId = userId ?? String.Empty;
 
-            // Because saving requires a database trip that is costly add it to the queue for
-            // async consume and return result to the user.
+            // Because saving requires a database trip that is costly, add it to the queue for
+            // asynchronus consumaption and return the result to the user.
             var queue = _serviceProvider.GetRequiredService<IQueue>();
             queue.QueueInvocableWithPayload<UnitOfWorkSaveInvocable, PriceSnapshot>(priceSnapShotValue);
 

@@ -24,8 +24,7 @@ namespace BitcoinPriceMonitor.Application.Tests.IntegrationTests
         {
             //Arrange
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
-            var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
-            var priceSnapShotService = new PriceSnapshotService(unitOfWork);
+            var priceSnapShotService = new PriceSnapshotService(serviceProvider);
             //Act
             var result = await priceSnapShotService.GetAllPriceSnapshots();
             //Assert

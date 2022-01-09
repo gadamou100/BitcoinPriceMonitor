@@ -1,6 +1,7 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
+using BitCoinPriceMonitor.Infrastructure.Utitlities;
 using BitCoinPriceMonitor.Infrastrucutre.Factories;
 using BitCoinPriceMonitor.Infrastrucutre.Network;
 using BitCoinPriceMonitor.Infrastrucutre.Persistance;
@@ -36,6 +37,10 @@ namespace BitCoinPriceMonitor.Infrastrucutre.DependencyInjection
             services.AddTransient<IHttpGetter, HttpClientWrapper>();
             services.AddTransient<IJsonParserToPriceSnapshotFactory, JsonParserFactory>();
             services.AddTransient<UnitOfWorkSaveInvocable>();
+            services.AddTransient<IPriceSnapshotOrderByBuilder, PriceSnapshotOrderByBuilder>();
+            services.AddTransient<IPriceSanpshotPredicateBuilder, PriceSanpshotPredicateBuilder>();
+
+
             services.AddQueue();
 
 

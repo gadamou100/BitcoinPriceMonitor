@@ -28,7 +28,7 @@ namespace BitcoinPriceMonitor.Application.Services
         {
             try
             {
-                if (Payload == null)
+                if (Payload == default)
                     return;
                 await _unitOfWork.GetRepository<PriceSnapshot>().InsertAsync(Payload);
                 await _unitOfWork.SaveChangesAsync();

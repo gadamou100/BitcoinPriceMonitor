@@ -3,6 +3,7 @@ using Arch.EntityFrameworkCore.UnitOfWork.Collections;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -16,10 +17,13 @@ namespace BitcoinPriceMonitor.Application.Services
     public class PriceSnapshotService : IPriceSnapshotService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public PriceSnapshotService(IUnitOfWork unitOfWork)
+        private readonly IPriceSanpshotPredicateBuilder _priceSanpshotPredicateBuilder;
+        private readonly IPriceSnapshotOrderByBuilder _priceSnapshotOrderByBuilder;
+        public PriceSnapshotService(IServiceProvider serviceProvider)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
+            _priceSanpshotPredicateBuilder = serviceProvider.GetRequiredService<IPriceSanpshotPredicateBuilder>();
+            _priceSnapshotOrderByBuilder = serviceProvider.GetRequiredService<IPriceSnapshotOrderByBuilder>();
         }
         public async Task<IPagedList<PriceSnapshot>> GetAllPriceSnapshots(DateTime? dateFilter = null, DateTime? endDateFilter = null, string? sourceFilter = null, int pageNo = 0, int pageSize = 10, bool orderByDate = false,  bool orderByPrice = false, bool descending = false)
         {
@@ -27,49 +31,12 @@ namespace BitcoinPriceMonitor.Application.Services
                 pageNo= 0;
             if(pageSize<0)
                 pageSize= 10;
-            var orderBy = BuildOrderBy(orderByDate, orderByPrice, descending);
-            var predicate = BuildPredicate(dateFilter,endDateFilter, sourceFilter);
+            var orderBy = _priceSnapshotOrderByBuilder.BuildOrderBy(orderByDate, orderByPrice, descending);
+            var predicate = _priceSanpshotPredicateBuilder.BuildPredicate(dateFilter,endDateFilter, sourceFilter);
             var model = await _unitOfWork.GetRepository<PriceSnapshot>()
                 .GetPagedListAsync(pageSize: pageSize, pageIndex: pageNo, include: p => p.Include(x => x.PriceSource), orderBy: orderBy, predicate: predicate);
         
             return model;
-        }
-
-        private static Func<IQueryable<PriceSnapshot>, IOrderedQueryable<PriceSnapshot>> BuildOrderBy(bool orderByDate = false, bool orderByPrice = false, bool descending = false)
-        {
-            Func<IQueryable<PriceSnapshot>, IOrderedQueryable<PriceSnapshot>> result = p => p.OrderBy(x => x.RetrievedTimeStamp);
-            //By Default we order by retrived date.
-            if (orderByDate == false && orderByPrice == false)
-                return descending ? p => p.OrderByDescending(x => x.RetrievedTimeStamp) : result;
-            if (orderByPrice)
-            {
-
-                if (orderByDate)
-                    result = descending
-                        ? (p => p.OrderByDescending(x => x.Value).ThenByDescending(x => x.RetrievedTimeStamp))
-                        : (p => p.OrderBy(x => x.Value).ThenBy(x => x.RetrievedTimeStamp));
-                else
-                    result = descending ? (p => p.OrderByDescending(x => x.Value)) : (p => p.OrderBy(x => x.Value));
-            
-            }
-            else if (orderByDate)
-                result = descending ? (p => p.OrderByDescending(x => x.RetrievedTimeStamp)) : (p => p.OrderBy(x => x.RetrievedTimeStamp));
-
-            return result;
-        }
-
-        private static Expression<Func<PriceSnapshot, bool>> BuildPredicate(DateTime? dateFilter = null, DateTime? endDateFilter = null, string? sourceFilter = null)
-        {
-            var dateStart = dateFilter == null || dateFilter < (DateTime) SqlDateTime.MinValue 
-                ? (DateTime) SqlDateTime.MinValue 
-                : dateFilter.Value.Date;
-            var dateEnd = endDateFilter == null || endDateFilter>=(DateTime)SqlDateTime.MaxValue 
-                ? (DateTime)SqlDateTime.MaxValue 
-                : endDateFilter.Value.Date.AddDays(1).AddMilliseconds(-1);
-
-            Expression<Func<PriceSnapshot, bool>> result = p => (p.RetrievedTimeStamp >= dateStart && p.RetrievedTimeStamp <= dateEnd)
-            && (sourceFilter == null || p.PriceSource.Name.ToLower().Contains(sourceFilter.ToLower()) );
-            return result;
         }
     }
 }
