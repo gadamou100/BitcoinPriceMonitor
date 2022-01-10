@@ -47,7 +47,6 @@ namespace BitcoinPriceMonitor.Application.Services
                 throw new PriceSanpshotNotFoundException(); 
             var priceSnapShotValue = priceSnapShot.Value;
             priceSnapShotValue.Id = Guid.NewGuid().ToString();
-            priceSnapShotValue.CreatedTimeStamp = DateTime.UtcNow;
             priceSnapShotValue.CreatorId = userId ?? String.Empty;
 
             // Because saving requires a database trip that is costly, add it to the queue for

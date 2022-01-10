@@ -30,6 +30,7 @@ namespace BitcoinPriceMonitor.Application.Services
             {
                 if (Payload == default)
                     return;
+                Payload.CreatedTimeStamp = DateTime.UtcNow;
                 await _unitOfWork.GetRepository<PriceSnapshot>().InsertAsync(Payload);
                 await _unitOfWork.SaveChangesAsync();
             }

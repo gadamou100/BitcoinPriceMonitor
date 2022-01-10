@@ -1,8 +1,10 @@
 ﻿using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.ViewModels;
+using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BitcoinPriceMonitor.Controllers
 {
@@ -71,18 +73,27 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSnapShotController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var model = await _priceSnapshotService.FindById(id);
+            if(model.HasValue)
+                return View(model.Value);
+            return NotFound();
         }
 
         // POST: PriceSnapShotController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(string id, IFormCollection collection)
         {
             try
             {
+                if(collection.TryGetValue(nameof(PriceSnapshot.Comments), out var comments))
+                {
+                    var model = new PriceSnapshot { Id = id, Comments = comments };
+                    var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+                    await _priceSnapshotService.Edit(model, userId);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -92,18 +103,22 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSnapShotController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            var model = await _priceSnapshotService.FindById(id);
+            if (model.HasValue)
+                return View(model.Value);
+            return NotFound();
         }
 
         // POST: PriceSnapShotController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
+                await _priceSnapshotService.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -22,8 +22,8 @@ namespace BitCoinPriceMonitor.Infrastructure.Factories
 
         public Maybe<IExternalPriceRetriver> Create(string sourceId)
         {
-            // Until now we have only REST price retrivers.
-            // However in the future we need to support retriving from different sources.
+            // Until now we have only REST price retrievers.
+            // However in the future we need to support retriving from different sources/protocols.
             if (sourceId == SourceSeededIds.BitStamp || sourceId == SourceSeededIds.CoinBase)
             {
                 var httpGetter = _serviceProvider.GetService(typeof(IHttpGetter)) as IHttpGetter;
