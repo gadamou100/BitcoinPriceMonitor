@@ -56,6 +56,44 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
         }
 
         [Fact]
+        public async Task FindByIdTest()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(new PriceSnapshot { Id="test"}));
+            mockRepo.Setup(p => p.Update(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.GetFirstOrDefaultAsyncSetUp<PriceSnapshot>().Returns(Task.FromResult(new PriceSnapshot()));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+           var result = await service.FindById( "test");
+
+            //Assert
+            Assert.True(result.HasValue);
+        }
+
+        [Fact]
+        public async Task FindByIdTestNotFound()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(new PriceSnapshot { Id = "test" }));
+            mockRepo.Setup(p => p.Update(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.GetFirstOrDefaultAsyncSetUp<PriceSnapshot>().Returns(Task.FromResult(default(PriceSnapshot)));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            var result = await service.FindById("test");
+
+            //Assert
+            Assert.False(result.HasValue);
+        }
+
+
+
+        [Fact]
         public async Task EditTest()
         {
             //Arrange

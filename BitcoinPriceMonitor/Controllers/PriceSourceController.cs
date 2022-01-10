@@ -70,7 +70,7 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSourceController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             return View();
         }
@@ -78,7 +78,7 @@ namespace BitcoinPriceMonitor.Controllers
         // POST: PriceSourceController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(string id, IFormCollection collection)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace BitcoinPriceMonitor.Controllers
         }
 
         // GET: PriceSourceController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             return View();
         }
@@ -99,7 +99,7 @@ namespace BitcoinPriceMonitor.Controllers
         // POST: PriceSourceController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(string id, IFormCollection collection)
         {
             try
             {
