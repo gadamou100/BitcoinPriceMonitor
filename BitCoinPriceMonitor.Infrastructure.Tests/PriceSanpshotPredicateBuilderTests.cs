@@ -49,7 +49,7 @@ namespace BitCoinPriceMonitor.Infrastructure.Tests
         [InlineData("coin")]
         [InlineData("base")]
         [InlineData("COIN BASe")]
-        public async Task BuildPredicateTestsWithooutDateParams( string? sourceName)
+        public async Task BuildPredicateTestsWithoutDateParams( string? sourceName)
         {
             var data = GetSampleData();
             var builder = new PriceSanpshotPredicateBuilder();
