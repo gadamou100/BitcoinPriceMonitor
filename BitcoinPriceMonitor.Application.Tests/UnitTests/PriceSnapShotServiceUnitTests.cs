@@ -2,6 +2,7 @@
 using Arch.EntityFrameworkCore.UnitOfWork.Collections;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
+using BitcoinPriceMonitor.Domain.Exceptions;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -26,7 +27,7 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
         [Theory]
         [InlineData(null,null,null,0,10,false,false,false)]
         [InlineData(null, null, null, -1, 2, false, false, false)]
-        public async Task GetPriceSnapshotsTestss(DateTime? dateFilter, DateTime? endDateFilter, string? sourceFilter, int pageNo, int pageSize, bool orderByDate, bool orderByPrice, bool descending)
+        public async Task GetPriceSnapshotsTests(DateTime? dateFilter, DateTime? endDateFilter, string? sourceFilter, int pageNo, int pageSize, bool orderByDate, bool orderByPrice, bool descending)
         {
             //Arrange
             var pageListMock = MockPagedListGetter.GetPageListMock();
@@ -52,6 +53,95 @@ namespace BitcoinPriceMonitor.Application.Tests.UnitTests
 
 
 
+        }
+
+        [Fact]
+        public async Task EditTest()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(new PriceSnapshot()));
+            mockRepo.Setup(p => p.Update(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(p=>p.GetRepository<PriceSnapshot>(It.IsAny<bool>())).Returns(mockRepo.Object);
+            unitOfWorkMock.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).Returns(Task.FromResult(1));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            await service.Edit(new PriceSnapshot(), "test");
+        }
+
+        [Fact]
+        public async Task EditTestWithNullModel()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(new PriceSnapshot()));
+            mockRepo.Setup(p => p.Update(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(p => p.GetRepository<PriceSnapshot>(It.IsAny<bool>())).Returns(mockRepo.Object);
+            unitOfWorkMock.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).Returns(Task.FromResult(1));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            var result = async () => await service.Edit(null, "test");
+
+            //Assert 
+            await Assert.ThrowsAsync<ArgumentNullException>(result);
+        }
+
+        [Fact]
+        public async Task EditTestWithEnityNoFound()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(default(PriceSnapshot)));
+            mockRepo.Setup(p => p.Update(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(p => p.GetRepository<PriceSnapshot>(It.IsAny<bool>())).Returns(mockRepo.Object);
+            unitOfWorkMock.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).Returns(Task.FromResult(1));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            var result = async () => await service.Edit(new PriceSnapshot(), "test");
+
+            //Assert 
+            await Assert.ThrowsAsync<PriceSanpshotNotFoundException>(result);
+        }
+
+        [Fact]
+        public async Task DeleteTest()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(new PriceSnapshot()));
+            mockRepo.Setup(p => p.Delete(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(p => p.GetRepository<PriceSnapshot>(It.IsAny<bool>())).Returns(mockRepo.Object);
+            unitOfWorkMock.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).Returns(Task.FromResult(1));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            await service.Delete("test");
+        }
+
+        [Fact]
+        public async Task DeleteTestWithEnityNoFound()
+        {
+            //Arrange
+            var mockRepo = new Mock<IRepository<PriceSnapshot>>();
+            mockRepo.GetFirstOrDefaultAsyncSetUp().Returns(Task.FromResult(default(PriceSnapshot)));
+            mockRepo.Setup(p => p.Delete(It.IsAny<PriceSnapshot>()));
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(p => p.GetRepository<PriceSnapshot>(It.IsAny<bool>())).Returns(mockRepo.Object);
+            unitOfWorkMock.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).Returns(Task.FromResult(1));
+            var service = new PriceSnapshotService(unitOfWorkMock.Object, default, default);
+
+            //Act
+            var result = async () => await service.Delete("test");
+
+            //Assert 
+            await Assert.ThrowsAsync<PriceSanpshotNotFoundException>(result);
         }
     }
 }

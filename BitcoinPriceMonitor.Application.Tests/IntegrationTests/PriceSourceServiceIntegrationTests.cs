@@ -1,6 +1,7 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using BitcoinPriceMonitor.Application.Interfaces;
 using BitcoinPriceMonitor.Application.Services;
+using BitcoinPriceMonitor.Domain.Constants;
 using BitCoinPriceMonitor.Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -18,22 +19,30 @@ using Xunit;
 
 namespace BitcoinPriceMonitor.Application.Tests.IntegrationTests
 {
-    public class PriceSourceServiceUnitTests
+    public class PriceSourceServiceIntegrationTests
     {
         [Fact]
-        public async Task GetAllPriceSnapshotsTest()
+        public async Task TestGetPriceSource()
         {
             //Arrange
             var serviceProvider = ServiceProviderGetter.GetServiceProvider();
-            var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
-            var orderByBuilder = serviceProvider.GetRequiredService<IPriceSnapshotOrderByBuilder>();
-            var predicateBuilder = serviceProvider.GetRequiredService<IPriceSanpshotPredicateBuilder>();
-            var priceSnapShotService = new PriceSnapshotService(uow, predicateBuilder,orderByBuilder);
+            var priceSourceService = new PriceSourceService(serviceProvider);
             //Act
-            var result = await priceSnapShotService.GetPriceSnapshots();
+            var result = await priceSourceService.GetPriceSources();
             //Assert
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Items);
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task TestGetLatestPriceFromSource()
+        {
+            //Arrange
+            var serviceProvider = ServiceProviderGetter.GetServiceProvider();
+            var priceSourceService = new PriceSourceService(serviceProvider);
+            //Act
+            var result = await priceSourceService.GetLatestPriceFromSource(SourceSeededIds.BitStamp, "");
+            //Assert
+            Assert.True(result > 0);
         }
     }
 }
